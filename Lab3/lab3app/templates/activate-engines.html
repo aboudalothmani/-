@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تفعيل محركات القوالب في Django</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+    .code-font {
+      font-family: 'Fira Code', monospace;
+    }
+    .card {
+      @apply bg-gray-900 border border-gray-700 shadow-2xl rounded-xl overflow-hidden backdrop-blur-sm;
+    }
+    .tag-dtl {
+      @apply bg-blue-900 text-blue-200 px-3 py-1 rounded-md text-xs font-semibold;
+    }
+    .tag-jinja {
+      @apply bg-green-900 text-green-200 px-3 py-1 rounded-md text-xs font-semibold;
+    }
+    .tag-mako {
+      @apply bg-purple-900 text-purple-200 px-3 py-1 rounded-md text-xs font-semibold;
+    }
+    pre {
+      @apply bg-gray-800 p-4 rounded-lg border border-gray-700 overflow-x-auto text-sm;
+    }
+    code {
+      @apply text-gray-100 code-font;
+    }
+    .step {
+      @apply flex items-start gap-3 mb-5;
+    }
+    .step-number {
+      @apply w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1;
+    }
+    .copy-btn {
+      @apply absolute top-2 left-2 bg-gray-700 hover:bg-gray-600 text-gray-300 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity;
+    }
+    .group {
+      @apply relative;
+    }
+    .terminal-bar {
+      @apply h-6 bg-gray-800 flex items-center px-3 rounded-t-xl text-xs text-gray-400 space-x-2 space-x-reverse;
+    }
+    .dot {
+      @apply w-3 h-3 rounded-full;
+    }
+  </style>
+</head>
+<body class="min-h-screen leading-relaxed">
+
+  <div class="container mx-auto px-4 py-10 max-w-5xl">
+
+    <!-- شريط المحطة -->
+    <div class="terminal-bar mb-2">
+      <div class="dot bg-red-500"></div>
+      <div class="dot bg-yellow-500"></div>
+      <div class="dot bg-green-500"></div>
+      <span class="mr-auto"><a href="{% url 'lab3app:home' %}">▷</a></span>
+    </div>
+
+    <!-- العنوان -->
+    <header class="text-center mb-10 px-4">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 via-green-400 to-purple-400 bg-clip-text text-transparent mb-4">
+        تفعيل محركات القوالب في Django
+      </h1>
+      <p class="text-lg text-gray-300 leading-relaxed">
+        دليل عملي خطوة بخطوة لتفعيل <span class="tag-dtl">DTL</span> (الافتراضي)،
+        <span class="tag-jinja">Jinja2</span>، و<span class="tag-mako">Mako</span> في مشروع Django.
+      </p>
+    </header>
+
+    <!-- DTL (الافتراضي) -->
+    <section class="card mb-8 p-6" id="dtl">
+      <h2 class="text-2xl font-bold text-blue-300 mb-5 flex items-center">
+        <i class="fab fa-python text-blue-400 ml-2"></i>
+        1. تفعيل DTL (Django Template Language)
+      </h2>
+      <p class="text-gray-300 mb-5">DTL مُفعّل افتراضيًا في Django. لا يتطلب تثبيتًا إضافيًا.</p>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div>
+          <p class="text-gray-200 font-medium">أضف مجلد <code class="highlight-code">templates</code> في مشروعك</p>
+          <pre class="group mt-2"><button class="copy-btn" data-clipboard="templates/">نسخ</button><code>your_project/
+├── templates/
+│   └── index.html
+├── settings.py
+└── urls.py</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div>
+          <p class="text-gray-200 font-medium">تأكد من إعدادات القوالب في <code class="highlight-code">settings.py</code></p>
+          <pre class="group mt-2"><button class="copy-btn" data-clipboard="TEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [BASE_DIR / 'templates'],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [...],\n        },\n    },\n]">نسخ الكود</button><code>TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Jinja2 -->
+    <section class="card mb-8 p-6" id="jinja2">
+      <h2 class="text-2xl font-bold text-green-300 mb-5 flex items-center">
+        <i class="fas fa-cubes text-green-400 ml-2"></i>
+        2. تفعيل Jinja2
+      </h2>
+      <p class="text-gray-300 mb-5">Jinja2 يوفر مرونة أكبر. يتطلب تثبيت حزمة إضافية.</p>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div>
+          <p class="text-gray-200 font-medium">تثبيت الحزمة</p>
+          <pre class="group mt-2"><button class="copy-btn" data-clipboard="pip install Jinja2">نسخ</button><code>pip install Jinja2</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div>
+          <p class="text-gray-200 font-medium">تعديل <code class="highlight-code">settings.py</code> لاستخدام Jinja2</p>
+          <pre class="group mt-2"><button class="copy-btn" data-clipboard="TEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.jinja2.Jinja2',\n        'DIRS': [BASE_DIR / 'jinja2'],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'environment': 'myproject.jinja2.environment',\n        },\n    },\n    # اترك DTL للتطبيقات المدمجة\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [...],\n        },\n    },\n]">نسخ الكود</button><code>TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [BASE_DIR / 'jinja2'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'myproject.jinja2.environment',
+        },
+    },
+    # مهم: اترك DTL للتطبيقات المدمجة مثل admin
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [...],
+        },
+    },
+]</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div>
+          <p class="text-gray-200 font-medium">إنشاء ملف <code class="highlight-code">jinja2.py</code> لتهيئة البيئة</p>
+          <pre class="group mt-2"><button class="copy-btn" data-clipboard="def environment(**options):\n    from jinja2 import Environment\n    \n    env = Environment(**options)\n    env.globals.update({\n        'my_global': 'value',\n    })\n    return env">نسخ الكود</button><code># myproject/jinja2.py
+def environment(**options):
+    from jinja2 import Environment
+    
+    env = Environment(**options)
+    env.globals.update({
+        'my_global': 'value',
+    })
+    return env</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mako -->
+    <section class="card mb-8 p-6" id="mako">
+      <h2 class="text-2xl font-bold text-purple-300 mb-5 flex items-center">
+        <i class="fas fa-rocket text-purple-400 ml-2"></i>
+        3. تفعيل Mako
+      </h2>
+      <p class="text-gray-300 mb-5">Mako يوفر أداءً عاليًا، لكنه يتطلب تكامل يدوي.</p>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div>
+          <p class="text-gray-200 font-medium">تثبيت الحزم</p>
+          <pre class="group mt-2"><button class="copy-btn" data-clipboard="pip install Mako django-mako-plus">نسخ</button><code>pip install Mako django-mako-plus</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div>
+          <p class="text-gray-200 font-medium">تعديل <code class="highlight-code">settings.py</code></p>
+          <pre class="group mt-2"><button class="copy-btn" data-clipboard="TEMPLATES = [\n    {\n        'BACKEND': 'django_mako_plus.MakoTemplates',\n        'DIRS': [BASE_DIR / 'mako_templates'],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'input_encoding': 'utf-8',\n        },\n    },\n    # DTL للتطبيقات الأخرى\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'APP_DIRS': True,\n    },\n]">نسخ الكود</button><code>TEMPLATES = [
+    {
+        'BACKEND': 'django_mako_plus.MakoTemplates',
+        'DIRS': [BASE_DIR / 'mako_templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'input_encoding': 'utf-8',
+        },
+    },
+    # DTL للتطبيقات الأخرى مثل admin
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+    },
+]</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div>
+          <p class="text-gray-200 font-medium">إنشاء قالب Mako (<code class="highlight-code">index.html</code>)</p>
+          <pre class="group mt-2"><button class="copy-btn" data-clipboard="<%page args='name'/>\\n<html>\\n  <body>\\n    <h1>مرحباً ${name}!</h1>\\n  </body>\\n</html>">نسخ الكود</button><code><%page args='name'%>
+<html>
+  <body>
+    <h1>مرحباً ${name}!</h1>
+  </body>
+</html></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- نصائح -->
+    <section class="card p-6">
+      <h3 class="text-xl font-semibold text-yellow-400 mb-4 flex items-center">
+        <i class="fas fa-lightbulb ml-2"></i>
+        نصائح مهمة
+      </h3>
+      <ul class="text-gray-300 space-y-2 text-sm">
+        <li><i class="fas fa-check text-green-400 ml-2"></i> يمكن دمج أكثر من محرك في نفس المشروع.</li>
+        <li><i class="fas fa-exclamation-triangle text-yellow-400 ml-2"></i> تأكد من أن <code class="highlight-code">APP_DIRS</code> مضبوط بشكل صحيح.</li>
+        <li><i class="fas fa-shield-alt text-blue-400 ml-2"></i> DTL هو الأكثر أمانًا للمحتوى الديناميكي من المستخدمين.</li>
+        <li><i class="fas fa-rocket text-purple-400 ml-2"></i> Mako ممتاز للتطبيقات عالية الأداء، لكنه يتطلب رعاية دقيقة.</li>
+      </ul>
+    </section>
+
+    <!-- تذييل -->
+    <footer class="mt-16 text-center text-gray-500 text-sm">
+      <p>تم تنفيذ هذا المشروع باستخدام <span class="text-blue-400">HTML</span>، <span class="text-green-400">Tailwind CSS</span>، و <span class="text-purple-400">Font Awesome</span>.</p>
+      <p class="mt-2">   © 2025 - عبدالمجيد العثماني</p>
+    </footer>
+
+  </div>
+
+  <!-- نسخ الكود -->
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const code = btn.getAttribute('data-clipboard');
+        navigator.clipboard.writeText(code).then(() => {
+          btn.innerHTML = 'تم!';
+          setTimeout(() => {
+            btn.innerHTML = 'نسخ';
+          }, 1500);
+        });
+      });
+    });
+
+    // تأثير دخول
+    gsap.from("section", {
+      opacity: 0,
+      y: 30,
+      duration: 0.6,
+      stagger: 0.3,
+      ease: "power3.out"
+    });
+  </script>
+
+</body>
+</html>

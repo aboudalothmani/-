@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>فلاتر Django Template Language - شرح مفصل</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+    .code-font {
+      font-family: 'Fira Code', monospace;
+    }
+    .card {
+      @apply bg-gray-900 border border-gray-700 shadow-2xl rounded-xl overflow-hidden backdrop-blur-sm mb-6;
+    }
+    pre {
+      @apply bg-gray-800 p-4 rounded-lg border border-gray-700 overflow-x-auto text-sm;
+    }
+    code {
+      @apply text-gray-100 code-font;
+    }
+    .tag {
+      @apply inline-block px-2 py-1 rounded-md text-xs font-semibold mr-2;
+    }
+    .tag-text { @apply bg-blue-900 text-blue-200; }
+    .tag-number { @apply bg-green-900 text-green-200; }
+    .tag-date { @apply bg-purple-900 text-purple-200; }
+    .tag-list { @apply bg-yellow-900 text-yellow-200; }
+    .tag-logic { @apply bg-red-900 text-red-200; }
+    .tag-html { @apply bg-indigo-900 text-indigo-200; }
+    .example {
+      @apply text-gray-400 text-sm mt-1;
+    }
+    .description {
+      @apply text-gray-300 text-sm mt-2 leading-relaxed;
+    }
+    .terminal-bar {
+      @apply h-6 bg-gray-800 flex items-center px-3 rounded-t-xl text-xs text-gray-400 space-x-2 space-x-reverse;
+    }
+    .dot {
+      @apply w-3 h-3 rounded-full;
+    }
+    .filter-item {
+      @apply p-4 border-b border-gray-800 hover:bg-gray-800 transition-colors;
+    }
+    .filter-name {
+      @apply font-bold text-white code-font text-lg;
+    }
+  </style>
+</head>
+<body class="min-h-screen leading-relaxed">
+
+  <div class="container mx-auto px-4 py-10 max-w-5xl">
+
+    <!-- شريط المحطة -->
+    <div class="terminal-bar mb-2">
+      <div class="dot bg-red-500"></div>
+      <div class="dot bg-yellow-500"></div>
+      <div class="dot bg-green-500"></div>
+      <span class="mr-auto"><a href="{% url 'lab3app:home' %}">▷</a></span>
+    </div>
+
+    <!-- العنوان -->
+    <header class="text-center mb-10 px-4">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 via-green-400 to-purple-400 bg-clip-text text-transparent mb-4">
+        فلاتر Django Template Language
+      </h1>
+      <p class="text-lg text-gray-300 leading-relaxed">
+        دليل شامل ومُصنّف مع <strong>شرح مفصل لكل فلتر</strong> – ماذا يفعل؟ ومتى تستخدمه؟
+      </p>
+    </header>
+
+    <!-- فئة: نصوص -->
+    <section class="card" id="text">
+      <div class="bg-blue-900 px-6 py-3">
+        <h2 class="text-xl font-bold text-blue-100 flex items-center">
+          <i class="fas fa-font ml-2"></i>
+          فلاتر النص (Text Filters)
+        </h2>
+      </div>
+      <div class="divide-y divide-gray-800">
+        <div class="filter-item">
+          <span class="filter-name">lower</span>
+          <span class="tag tag-text">نص</span>
+          <pre><code>{{ "Hello World"|lower }}</code></pre>
+          <p class="example">→ "hello world"</p>
+          <p class="description">يحول جميع الأحرف إلى حروف صغيرة (lowercase). مفيد لتوحيد النصوص قبل العرض أو المقارنة.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">upper</span>
+          <span class="tag tag-text">نص</span>
+          <pre><code>{{ "hello"|upper }}</code></pre>
+          <p class="example">→ "HELLO"</p>
+          <p class="description">يحول جميع الأحرف إلى حروف كبيرة (uppercase). مناسب للعناوين أو الإبراز.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">title</span>
+          <span class="tag tag-text">نص</span>
+          <pre><code>{{ "django is great"|title }}</code></pre>
+          <p class="example">→ "Django Is Great"</p>
+          <p class="description">يحوّل أول حرف من كل كلمة إلى كبير (Title Case). مثالي للعناوين.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">capfirst</span>
+          <span class="tag tag-text">نص</span>
+          <pre><code>{{ "hello world"|capfirst }}</code></pre>
+          <p class="example">→ "Hello world"</p>
+          <p class="description">يحوّل أول حرف فقط من النص إلى كبير، ويترك البقية كما هي.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">truncatechars:10</span>
+          <span class="tag tag-text">نص</span>
+          <pre><code>{{ "Hello World!"|truncatechars:10 }}</code></pre>
+          <p class="example">→ "Hello W..."</p>
+          <p class="description">يقطع النص بعد عدد معين من الأحرف (بما في ذلك ...). يحافظ على الطول في العناوين.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">cut:" "</span>
+          <span class="tag tag-text">نص</span>
+          <pre><code>{{ "Hello World"|cut:" " }}</code></pre>
+          <p class="example">→ "HelloWorld"</p>
+          <p class="description">يزيل جميع تكرارات النص المحدد (مثل المسافات). مفيد لتنظيف المدخلات.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- فئة: أرقام -->
+    <section class="card" id="number">
+      <div class="bg-green-900 px-6 py-3">
+        <h2 class="text-xl font-bold text-green-100 flex items-center">
+          <i class="fas fa-hashtag ml-2"></i>
+          فلاتر الأرقام (Number Filters)
+        </h2>
+      </div>
+      <div class="divide-y divide-gray-800">
+        <div class="filter-item">
+          <span class="filter-name">add:5</span>
+          <span class="tag tag-number">رقم</span>
+          <pre><code>{{ 10|add:5 }}</code></pre>
+          <p class="example">→ 15</p>
+          <p class="description">يُضيف قيمة معينة إلى المتغير. يمكن استخدامه مع متغيرات أو أرقام مباشرة.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">floatformat:2</span>
+          <span class="tag tag-number">رقم</span>
+          <pre><code>{{ 3.14159|floatformat:2 }}</code></pre>
+          <p class="example">→ "3.14"</p>
+          <p class="description">يُقرب العدد العشري إلى عدد محدد من المنازل العشرية. إذا لم يُحدد، يُقرب للعدد الصحيح.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">intcomma</span>
+          <span class="tag tag-number">رقم</span>
+          {% load humanize %}
+          <pre><code>{{ 1000000|intcomma }}</code></pre>
+          <p class="example">→ "1,000,000"</p>
+          <p class="description">يُضيف فواصل أرقام (,) لتسهيل قراءة الأرقام الكبيرة. يدعم التنسيق حسب اللغة.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- فئة: التواريخ -->
+    <section class="card" id="date">
+      <div class="bg-purple-900 px-6 py-3">
+        <h2 class="text-xl font-bold text-purple-100 flex items-center">
+          <i class="far fa-calendar-alt ml-2"></i>
+          فلاتر التواريخ (Date Filters)
+        </h2>
+      </div>
+      <div class="divide-y divide-gray-800">
+        <div class="filter-item">
+          <span class="filter-name">date:"Y-m-d"</span>
+          <span class="tag tag-date">تاريخ</span>
+          <pre><code>{{ now|date:"Y-m-d" }}</code></pre>
+          <p class="example">→ "2025-04-05"</p>
+          <p class="description">يُهيئ كائن التاريخ إلى نص بتنسيق مخصص. <code>Y</code> سنة، <code>m</code> شهر، <code>d</code> يوم.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">time:"H:i"</span>
+          <span class="tag tag-date">وقت</span>
+          <pre><code>{{ now|time:"H:i" }}</code></pre>
+          <p class="example">→ "14:30"</p>
+          <p class="description">يُهيئ كائن الوقت فقط. <code>H</code> ساعة (24)، <code>i</code> دقائق.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">timesince</span>
+          <span class="tag tag-date">فترة</span>
+          <pre><code>{{ past_date|timesince }}</code></pre>
+          <p class="example">→ "3 ساعات مضت"</p>
+          <p class="description">يحسب الفرق الزمني بين تاريخ وآخر (أو الآن)، ويعرضه بشكل قابل للقراءة.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- فئة: القوائم -->
+    <section class="card" id="list">
+      <div class="bg-yellow-900 px-6 py-3">
+        <h2 class="text-xl font-bold text-yellow-100 flex items-center">
+          <i class="fas fa-list-ul ml-2"></i>
+          فلاتر القوائم (List Filters)
+        </h2>
+      </div>
+      <div class="divide-y divide-gray-800">
+        <div class="filter-item">
+          <span class="filter-name">first</span>
+          <span class="tag tag-list">قائمة</span>
+          <pre><code>{{ items|first }}</code></pre>
+          <p class="example">→ أول عنصر في القائمة</p>
+          <p class="description">يعيد العنصر الأول من القائمة أو السلسلة. مفيد للحصول على "أحدث" عنصر.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">last</span>
+          <span class="tag tag-list">قائمة</span>
+          <pre><code>{{ items|last }}</code></pre>
+          <p class="example">→ آخر عنصر في القائمة</p>
+          <p class="description">يعيد العنصر الأخير من القائمة. مفيد في عرض "آخر تحديث".</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">length</span>
+          <span class="tag tag-list">قائمة</span>
+          <pre><code>{{ items|length }}</code></pre>
+          <p class="example">→ عدد العناصر (مثلاً: 5)</p>
+          <p class="description">يحسب عدد العناصر في القائمة أو عدد الأحرف في النص.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">join:", "</span>
+          <span class="tag tag-list">قائمة</span>
+          <pre><code>{{ items|join:", " }}</code></pre>
+          <p class="example">→ "تفاح، موز، برتقال"</p>
+          <p class="description">يحوّل قائمة إلى نص واحد، مع فصل العناصر بالنص المحدد.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- فئة: المنطق -->
+    <section class="card" id="logic">
+      <div class="bg-red-900 px-6 py-3">
+        <h2 class="text-xl font-bold text-red-100 flex items-center">
+          <i class="fas fa-toggle-on ml-2"></i>
+          فلاتر المنطق (Logic Filters)
+        </h2>
+      </div>
+      <div class="divide-y divide-gray-800">
+        <div class="filter-item">
+          <span class="filter-name">default:"قيمة افتراضية"</span>
+          <span class="tag tag-logic">منطق</span>
+          <pre><code>{{ empty_var|default:"قيمة افتراضية" }}</code></pre>
+          <p class="example">→ "قيمة افتراضية" (إذا كان فارغًا)</p>
+          <p class="description">يُعيّن قيمة افتراضية إذا كان المتغير فارغًا أو غير معرّف (None, "", [], إلخ).</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">yesno:"نعم,لا,ربما"</span>
+          <span class="tag tag-logic">منطق</span>
+          <pre><code>{{ True|yesno:"نعم,لا,ربما" }}</code></pre>
+          <p class="example">→ "نعم"</p>
+          <p class="description">يحول القيم المنطقية (True/False/None) إلى نصوص مخصصة حسب اللغة.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- فئة: HTML وأمن -->
+    <section class="card" id="html">
+      <div class="bg-indigo-900 px-6 py-3">
+        <h2 class="text-xl font-bold text-indigo-100 flex items-center">
+          <i class="fas fa-shield-alt ml-2"></i>
+          فلاتر HTML وأمن
+        </h2>
+      </div>
+      <div class="divide-y divide-gray-800">
+        <div class="filter-item">
+          <span class="filter-name">escape</span>
+          <span class="tag tag-html">HTML</span>
+          <pre><code>{{ "<script>alert('XSS')</script>"|escape }}</code></pre>
+          <p class="example">→ &amp;lt;script&amp;gt;...&amp;lt;/script&amp;gt;</p>
+          <p class="description">يحول أحرف HTML الخاصة إلى كيانات (Entities) لمنع تنفيذ الكود. <strong>يُستخدم افتراضيًا</strong>.</p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">safe</span>
+          <span class="tag tag-html">HTML</span>
+          <pre><code>{{ "<strong>مهم</strong>"|safe }}</code></pre>
+          <p class="example">→ <strong>مهم</strong> (يُعرض كنص عريض)</p>
+          <p class="description">يُخبر Django أن النص آمن للعرض كـ HTML. <strong>يجب استخدامه بحذر!</strong></p>
+        </div>
+
+        <div class="filter-item">
+          <span class="filter-name">linebreaks</span>
+          <span class="tag tag-html">نص</span>
+          <pre><code>{{ "سطر أول\nسطر ثاني"|linebreaks }}</code></pre>
+          <p class="example">→ يتم تحويل الأسطر إلى <br> ووضع النص داخل <p></p>
+          <p class="description">يحول فواصل الأسطر في النص إلى علامات <br> و <p> لعرضها بشكل صحيح في HTML.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- نصائح -->
+    <section class="card p-6">
+      <h3 class="text-xl font-semibold text-yellow-400 mb-4 flex items-center">
+        <i class="fas fa-lightbulb ml-2"></i>
+        نصائح مهمة
+      </h3>
+      <ul class="text-gray-300 space-y-2 text-sm">
+        <li><i class="fas fa-check text-green-400 ml-2"></i> استخدم <code class="highlight-code">escape</code> تلقائيًا في القوالب – لا داعي لكتابته دائمًا.</li>
+        <li><i class="fas fa-exclamation-triangle text-yellow-400 ml-2"></i> تجنب <code class="highlight-code">safe</code> مع أي محتوى من المستخدم.</li>
+        <li><i class="fas fa-plug text-blue-400 ml-2"></i> يمكنك دمج الفلاتر: <code class="highlight-code">{{ "HELLO"|lower|capfirst }}</code> → "Hello"</li>
+        <li><i class="fas fa-code text-purple-400 ml-2"></i> أنشئ فلاتر مخصصة باستخدام <code class="highlight-code">@register.filter</code> في <code>templatetags/</code>.</li>
+      </ul>
+    </section>
+
+    <!-- تذييل -->
+    <footer class="mt-16 text-center text-gray-500 text-sm">
+      <p>تم تنفيذ هذا المشروع باستخدام <span class="text-blue-400">HTML</span>، <span class="text-green-400">Tailwind CSS</span>، و <span class="text-purple-400">Font Awesome</span>.</p>
+      <p class="mt-2">   © 2025 - عبدالمجيد العثماني</p>
+    </footer>
+
+  </div>
+
+  <!-- التأثيرات -->
+  <script>
+    gsap.from("section", {
+      opacity: 0,
+      y: 30,
+      duration: 0.6,
+      stagger: 0.2,
+      ease: "power3.out"
+    });
+  </script>
+
+</body>
+</html>

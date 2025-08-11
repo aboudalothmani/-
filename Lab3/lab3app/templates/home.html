@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>الصفحة الرئيسية - تكليف Django</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+    .code-font {
+      font-family: 'Fira Code', monospace;
+    }
+    .card {
+      @apply bg-gray-900 border border-gray-700 shadow-2xl rounded-xl overflow-hidden backdrop-blur-sm mb-6;
+    }
+    .btn {
+      @apply inline-flex items-center gap-2 px-5 py-3 rounded-lg font-medium transition-all duration-200;
+    }
+    .btn-blue {
+      @apply bg-blue-600 hover:bg-blue-700 text-white;
+    }
+    .btn-green {
+      @apply bg-green-600 hover:bg-green-700 text-white;
+    }
+    .btn-purple {
+      @apply bg-purple-600 hover:bg-purple-700 text-white;
+    }
+    .btn-gray {
+      @apply bg-gray-700 hover:bg-gray-600 text-gray-100;
+    }
+    .terminal-bar {
+      @apply h-6 bg-gray-800 flex items-center px-3 rounded-t-xl text-xs text-gray-400 space-x-2 space-x-reverse;
+    }
+    .dot {
+      @apply w-3 h-3 rounded-full;
+    }
+    .info-box {
+      @apply p-4 border border-gray-700 rounded-lg bg-gray-800 text-sm;
+    }
+    .highlight {
+      @apply font-bold text-blue-400;
+    }
+  </style>
+</head>
+<body class="min-h-screen leading-relaxed">
+
+  <div class="container mx-auto px-4 py-10 max-w-5xl">
+
+    <!-- شريط المحطة -->
+    <div class="terminal-bar mb-2">
+      <div class="dot bg-red-500"></div>
+      <div class="dot bg-yellow-500"></div>
+      <div class="dot bg-green-500"></div>
+      <span class="mr-auto"></span>
+    </div>
+
+    <!-- العنوان -->
+    <header class="text-center mb-8 px-4">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 via-green-400 to-purple-400 bg-clip-text text-transparent mb-4">
+        تكليف المحاضرة الثالثة - Django Templates
+      </h1>
+      <p class="text-lg text-gray-300">مقرر تطوير الويب باستخدام Python وDjango</p>
+    </header>
+
+    <!-- معلومات التكليف -->
+    <section class="card p-6" id="assignment">
+      <h2 class="text-2xl font-bold text-yellow-400 mb-4 flex items-center">
+        <i class="fas fa-tasks ml-2"></i>
+        تكليف المحاضرة الثالثة
+      </h2>
+      <div class="space-y-4 text-gray-300">
+        <p><strong>الموضوع:</strong> دراسة وتحليل محركات القوالب في Django وفلاتر القوالب.</p>
+        <p><strong>المطلوب:</strong></p>
+        <ul class="list-disc list-inside space-y-2 mr-4">
+          <li>مقارنة بين محركات القوالب: <strong>DTL، Jinja2، وMako</strong>.</li>
+          <li>شرح كيفية تفعيل كل محرك في مشروع Django.</li>
+          <li>عرض شامل لجميع فلاتر <strong>Django Template Language (DTL)</strong> مصنفة حسب الوظيفة.</li>
+          <li>تقديم النتائج في صفحات HTML باحترافية عالية.</li>
+        </ul>
+        <p><strong>الهدف:</strong> فهم عميق لآلية القوالب في Django واختيار الأنسب حسب حالة الاستخدام.</p>
+      </div>
+    </section>
+
+    <!-- بيانات الطالب والمدرس -->
+    <section class="card p-6">
+      <h2 class="text-2xl font-bold text-cyan-400 mb-4 flex items-center">
+        <i class="fas fa-user-graduate ml-2"></i>
+        بيانات التنفيذ
+      </h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="info-box">
+          <p><i class="fas fa-chalkboard-teacher text-blue-400 ml-2"></i> <strong>مدرس المقرر:</strong></p>
+          <p class="highlight mt-1">مالك المصنف</p>
+        </div>
+        <div class="info-box">
+          <p><i class="fas fa-user text-green-400 ml-2"></i> <strong>تنفيذ الطالب:</strong></p>
+          <p class="highlight mt-1">عبدالمجيد العثماني</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- روابط للصفحات -->
+    <section class="card p-6">
+      <h2 class="text-2xl font-bold text-green-400 mb-6 flex items-center">
+        <i class="fas fa-external-link-alt ml-2"></i>
+        التنقل إلى الصفحات
+      </h2>
+      <div class="grid gap-4 md:grid-cols-1 lg:grid-cols-3">
+
+        <!-- صفحة التفعيل -->
+        <a href="{% url 'lab3app:activate_engines' %}" class="btn btn-blue group">
+          <i class="fas fa-balance-scale"></i>
+          <span>مقارنة المحركات</span>
+          <i class="fas fa-arrow-left group-hover:translate-x-1 transition-transform"></i>
+        </a>
+
+        
+         <!-- صفحة المقارنة -->
+         <a href="{% url 'lab3app:comparison' %}" class="btn btn-green group">رابط المقارنة</a>
+          <i class="fas fa-cogs"></i>
+          <span>تفعيل المحركات</span>
+          <i class="fas fa-arrow-left group-hover:translate-x-1 transition-transform"></i>
+        </a>
+
+        <!-- صفحة الفلاتر -->
+        <a href="{% url 'lab3app:dtl_filters' %}" class="btn btn-purple group">
+          <i class="fas fa-filter"></i>
+          <span>فلاتر DTL</span>
+          <i class="fas fa-arrow-left group-hover:translate-x-1 transition-transform"></i>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- تذييل -->
+    <footer class="mt-12 text-center text-gray-500 text-sm">
+      <p>تم تنفيذ هذا المشروع باستخدام <span class="text-blue-400">HTML</span>، <span class="text-green-400">Tailwind CSS</span>، و <span class="text-purple-400">Font Awesome</span>.</p>
+      <p class="mt-2">   © 2025 - عبدالمجيد العثماني</p>
+    </footer>
+
+  </div>
+
+  <!-- تأثيرات الدخول -->
+  <script>
+    gsap.from("#assignment", {
+      opacity: 0,
+      y: 30,
+      duration: 0.6,
+      ease: "power3.out"
+    });
+
+    gsap.from(".info-box", {
+      opacity: 0,
+      y: 20,
+      duration: 0.5,
+      stagger: 0.2,
+      ease: "power2.out"
+    });
+
+    gsap.from(".btn", {
+      opacity: 0,
+      y: 20,
+      duration: 0.6,
+      stagger: 0.2,
+      ease: "back.out(1.2)"
+    });
+  </script>
+
+</body>
+</html>

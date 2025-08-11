@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تحليل محركات القوالب - مثل محرر الكود</title>
+
+  <!-- Google Fonts: Fira Code for code, Inter for text -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+    .code-font {
+      font-family: 'Fira Code', monospace;
+    }
+    .card {
+      @apply bg-gray-900 border border-gray-700 shadow-2xl rounded-xl overflow-hidden backdrop-blur-sm;
+    }
+    .tag-dtl {
+      @apply bg-blue-900 text-blue-200 px-3 py-1 rounded-md text-xs font-semibold;
+    }
+    .tag-jinja {
+      @apply bg-green-900 text-green-200 px-3 py-1 rounded-md text-xs font-semibold;
+    }
+    .tag-mako {
+      @apply bg-purple-900 text-purple-200 px-3 py-1 rounded-md text-xs font-semibold;
+    }
+    .highlight-code {
+      @apply bg-gray-800 text-gray-100 px-2 py-1 rounded text-sm;
+    }
+    .metric-high {
+      @apply text-green-400 font-bold;
+    }
+    .metric-medium {
+      @apply text-yellow-400 font-semibold;
+    }
+    .metric-low {
+      @apply text-red-400 font-semibold;
+    }
+    .glow {
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    }
+    .terminal-bar {
+      @apply h-6 bg-gray-800 flex items-center px-3 rounded-t-xl text-xs text-gray-400 space-x-2 space-x-reverse;
+    }
+    .dot {
+      @apply w-3 h-3 rounded-full;
+    }
+    .toggle-btn {
+      @apply text-sm font-medium text-gray-300 hover:text-white cursor-pointer transition flex items-center gap-2;
+    }
+  </style>
+</head>
+<body class="min-h-screen leading-relaxed">
+
+  <div class="container mx-auto px-4 py-10 max-w-6xl">
+
+    <!-- شريط المحطة (Terminal Bar) -->
+    <div class="terminal-bar mb-2">
+      <div class="dot bg-red-500"></div>
+      <div class="dot bg-yellow-500"></div>
+      <div class="dot bg-green-500"></div>
+      <span class="mr-auto"><a href="{% url 'lab3app:home' %}">▷</a></span>
+    </div>
+
+    <!-- العنوان -->
+    <header class="text-center mb-10 px-4">
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 via-green-400 to-purple-400 bg-clip-text text-transparent mb-4">
+        تحليل محركات القوالب
+      </h1>
+      <p class="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        مقارنة تقنية بين <span class="tag-dtl">DTL</span>،
+        <span class="tag-jinja">Jinja2</span>، و<span class="tag-mako">Mako</span>
+        من منظور الأداء، المرونة، والتكامل.
+      </p>
+    </header>
+
+    <!-- الجدول الرئيسي -->
+    <div class="card mx-auto glow" id="comparisonTable">
+      <div class="overflow-x-auto">
+        <table class="w-full text-right text-sm md:text-base">
+          <thead class="bg-gray-800 text-gray-200 text-lg">
+            <tr>
+              <th class="py-5 px-6 rounded-tl-lg">المعيار</th>
+              <th class="py-5 px-6">DTL <i class="fab fa-python text-blue-400 mr-1"></i></th>
+              <th class="py-5 px-6">Jinja2 <i class="fas fa-cubes text-green-400 mr-1"></i></th>
+              <th class="py-5 px-6 rounded-tr-lg">Mako <i class="fas fa-rocket text-purple-400 mr-1"></i></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-700">
+
+            <!-- الصيغة -->
+            <tr class="hover:bg-gray-800 transition-colors">
+              <td class="font-semibold py-5 px-6 text-blue-300">الصيغة</td>
+              <td class="py-5 px-6">
+                <code class="highlight-code code-font">{% if var %}
+    {{ var }}
+{% endif %}
+</code>
+                <p class="text-gray-400 text-sm mt-1">محدودة، آمنة، بسيطة</p>
+              </td>
+              <td class="py-5 px-6">
+                <code class="highlight-code code-font">{% if var %}
+    {{ var|upper }}
+{% endif %}
+</code>
+                <p class="text-gray-400 text-sm mt-1">مرونة عالية، تعابير بايثون</p>
+              </td>
+              <td class="py-5 px-6">
+                <code class="highlight-code code-font"><%py%> x=5 </%py%> ${x}</code>
+                <p class="text-gray-400 text-sm mt-1">كتابة بايثون مباشرة</p>
+              </td>
+            </tr>
+
+                  {{ var|upper }}
+                </code>
+                <p class="text-gray-400 text-sm mt-1">مرونة عالية، تعابير بايثون</p>
+              </td>
+              <td class="py-5 px-6">
+                <code class="highlight-code code-font"><%py%> x=5 </%py%> ${x}</code>
+                <p class="text-gray-400 text-sm mt-1">كتابة بايثون مباشرة</p>
+              </td>
+            </tr>
+
+            <!-- الميزات -->
+            <tr class="hover:bg-gray-800 transition-colors">
+              <td class="font-semibold py-5 px-6 text-blue-300">الميزات</td>
+              <td class="py-5 px-6 text-sm">
+                <div class="flex flex-col gap-1">
+                  <span class="text-gray-300"><i class="fas fa-check text-green-500 ml-2"></i> وراثة القوالب</span>
+                  <span class="text-gray-400"><i class="fas fa-times text-red-500 ml-2"></i> لا دعم للدوال</span>
+                  <span class="text-gray-400"><i class="fas fa-times text-red-500 ml-2"></i> لا حلقات متداخلة</span>
+                </div>
+              </td>
+              <td class="py-5 px-6 text-sm">
+                <div class="flex flex-col gap-1">
+                  <span class="text-gray-300"><i class="fas fa-check text-green-500 ml-2"></i> تعابير بايثون</span>
+                  <span class="text-gray-300"><i class="fas fa-check text-green-500 ml-2"></i> تحديد متغيرات</span>
+                  <span class="text-gray-300"><i class="fas fa-check text-green-500 ml-2"></i> فلاتر مخصصة</span>
+                </div>
+              </td>
+              <td class="py-5 px-6 text-sm">
+                <div class="flex flex-col gap-1">
+                  <span class="text-gray-300"><i class="fas fa-check text-green-500 ml-2"></i> كود بايثون كامل</span>
+                  <span class="text-gray-300"><i class="fas fa-check text-green-500 ml-2"></i> دوال داخل القالب</span>
+                  <span class="text-gray-300"><i class="fas fa-check text-green-500 ml-2"></i> دعم المفاهيم البرمجية</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- الأداء -->
+            <tr class="hover:bg-gray-800 transition-colors">
+              <td class="font-semibold py-5 px-6 text-blue-300">الأداء</td>
+              <td class="py-5 px-6 metric-medium">متوسط ⚙️</td>
+              <td class="py-5 px-6 metric-high">عالي 🚀</td>
+              <td class="py-5 px-6 metric-high">عالي جدًا 🚀🚀</td>
+            </tr>
+
+            <!-- المزايا -->
+            <tr class="hover:bg-gray-800 transition-colors">
+              <td class="font-semibold py-5 px-6 text-blue-300">المزايا</td>
+              <td class="py-5 px-6 text-xs">
+                <span class="tag-dtl">آمن</span>
+                <span class="tag-dtl">مدمج</span>
+                <span class="tag-dtl">سهل</span>
+              </td>
+              <td class="py-5 px-6 text-xs">
+                <span class="tag-jinja">مرونة</span>
+                <span class="tag-jinja">سريع</span>
+                <span class="tag-jinja">قابل للتوسيع</span>
+              </td>
+              <td class="py-5 px-6 text-xs">
+                <span class="tag-mako">أداء عالي</span>
+                <span class="tag-mako">حرية كاملة</span>
+                <span class="tag-mako">مطوّر متقدم</span>
+              </td>
+            </tr>
+
+            <!-- العيوب -->
+            <tr class="hover:bg-gray-800 transition-colors">
+              <td class="font-semibold py-5 px-6 text-blue-300">العيوب</td>
+              <td class="py-5 px-6 text-sm">
+                <div class="flex flex-col gap-1">
+                  <span class="text-red-400"><i class="fas fa-ban ml-2"></i> محدود جدًا</span>
+                  <span class="text-yellow-400"><i class="fas fa-exclamation-triangle ml-2"></i> صعب التخصيص</span>
+                </div>
+              </td>
+              <td class="py-5 px-6 text-sm">
+                <div class="flex flex-col gap-1">
+                  <span class="text-yellow-400"><i class="fas fa-exclamation-triangle ml-2"></i> يحتاج تكامل</span>
+                  <span class="text-red-400"><i class="fas fa-shield-alt ml-2"></i> أقل أمانًا</span>
+                </div>
+              </td>
+              <td class="py-5 px-6 text-sm">
+                <div class="flex flex-col gap-1">
+                  <span class="text-red-400"><i class="fas fa-terminal ml-2"></i> منحنى تعليم حاد</span>
+                  <span class="text-red-400"><i class="fas fa-skull-crossbones ml-2"></i> خطر تنفيذ كود</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- حالات الاستخدام -->
+            <tr class="hover:bg-gray-800 transition-colors">
+              <td class="font-semibold py-5 px-6 text-blue-300">الاستخدام</td>
+              <td class="py-5 px-6">
+                <span class="tag-dtl">مشاريع بسيطة</span>
+              </td>
+              <td class="py-5 px-6">
+                <span class="tag-jinja">مشاريع متوسطة</span>
+              </td>
+              <td class="py-5 px-6">
+                <span class="tag-mako">تطبيقات عالية الأداء</span>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- أزرار تفاعلية -->
+    <div class="mt-8 text-center">
+      <button id="toggleDetails" class="toggle-btn mx-auto">
+        <i class="fas fa-angle-down"></i>
+        <span>إظهار التفاصيل التقنية</span>
+      </button>
+    </div>
+
+    <!-- قسم التفاصيل (مخفي ابتدائيًا) -->
+    <div id="detailsSection" class="mt-6 p-6 bg-gray-800 border border-gray-700 rounded-xl hidden">
+      <h3 class="text-xl font-semibold text-green-400 mb-3 flex items-center">
+        <i class="fas fa-terminal ml-2"></i>
+        تحليل تقني إضافي
+      </h3>
+      <ul class="text-gray-300 space-y-2 text-sm">
+        <li><strong>DTL:</strong> مثالي للمشاريع التعليمية أو التي تتطلب أمانًا عاليًا (مثل إدارة المحتوى).</li>
+        <li><strong>Jinja2:</strong> الخيار الأفضل للمشاريع التي تستخدم Flask أو تحتاج مرونة دون الخروج عن الحدود.</li>
+        <li><strong>Mako:</strong> مخصص للمطورين المتقدمين الذين يبحثون عن أقصى أداء وتحكم.</li>
+      </ul>
+    </div>
+
+    <!-- تذييل -->
+    <footer class="mt-16 text-center text-gray-500 text-sm">
+      <p>تم تنفيذ هذا المشروع باستخدام <span class="text-blue-400">HTML</span>، <span class="text-green-400">Tailwind CSS</span>، و <span class="text-purple-400">Font Awesome</span>.</p>
+      <p class="mt-2">   © 2025 - عبدالمجيد العثماني</p>
+    </footer>
+
+  </div>
+
+  <!-- التأثيرات -->
+  <script>
+    // دخول تدريجي للجدول
+    gsap.from("#comparisonTable", {
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      ease: "power3.out"
+    });
+
+    // زر التبديل
+    const toggleBtn = document.getElementById("toggleDetails");
+    const detailsSection = document.getElementById("detailsSection");
+
+    toggleBtn.addEventListener("click", () => {
+      const isHidden = detailsSection.classList.contains("hidden");
+      
+      detailsSection.classList.toggle("hidden", !isHidden);
+      const icon = toggleBtn.querySelector("i");
+      const text = toggleBtn.querySelector("span");
+
+      if (isHidden) {
+        icon.classList.remove("fa-angle-down");
+        icon.classList.add("fa-angle-up");
+        text.textContent = "إخفاء التفاصيل";
+        gsap.from(detailsSection, { opacity: 0, y: 20, duration: 0.4 });
+      } else {
+        icon.classList.remove("fa-angle-up");
+        icon.classList.add("fa-angle-down");
+        text.textContent = "إظهار التفاصيل التقنية";
+      }
+    });
+  </script>
+
+</body>
+</html>
