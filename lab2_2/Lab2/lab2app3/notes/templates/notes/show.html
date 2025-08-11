@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}عرض الملاحظات{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-sticky"></i> قائمة الملاحظات</h2>
+    <a href="{% url 'notes_index' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-house"></i> الرئيسية
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if notes %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>العنوان</th>
+                        <th>المحتوى</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for note in notes %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><strong>{{ note.title }}</strong></td>
+                        <td>{{ note.content|truncatechars:50 }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'notes_edit' note.id %}" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-pencil"></i> تعديل
+                                </a>
+                                <a href="{% url 'notes_delete' note.id %}" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash"></i> حذف
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center text-muted">لا توجد ملاحظات بعد.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}تعديل الكتاب{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-success">
+            <div class="card-header bg-success text-white">
+                <i class="bi bi-pencil"></i> تعديل الكتاب رقم {{ id }}
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">العنوان</label>
+                        <input type="text" class="form-control" id="title" value="عنوان الكتاب">
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">الكاتب</label>
+                        <input type="text" class="form-control" id="author" value="اسم الكاتب">
+                    </div>
+                    <div class="mb-3">
+                        <label for="year" class="form-label">السنة</label>
+                        <input type="number" class="form-control" id="year" value="2023">
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-save"></i> حفظ التعديلات
+                    </button>
+                </form>
+                <div class="mt-3 text-center">
+                    <a href="{% url 'books_show' %}">العودة إلى القائمة</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
